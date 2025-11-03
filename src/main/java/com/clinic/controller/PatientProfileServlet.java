@@ -38,7 +38,7 @@ public class PatientProfileServlet extends HttpServlet {
         }
         
         request.setAttribute("patient", patient);
-        request.getRequestDispatcher("/patient/patient-profile.jsp").forward(request, response);
+        request.getRequestDispatcher("patient-profile.jsp").forward(request, response);
     }
     
     @Override

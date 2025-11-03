@@ -102,7 +102,7 @@ public class PatientDAO {
     }
     public boolean updatePatient(Patient patient) {
         String sql = "UPDATE patients SET blood_type = ?, allergies = ?, medical_history = ?, " +
-                    ", updated_at = CURRENT_TIMESTAMP " +
+                    " updated_at = CURRENT_TIMESTAMP " +
                     "WHERE user_id = ?";
         
         try (Connection conn = DBConnection.getConnection();

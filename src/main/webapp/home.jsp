@@ -96,7 +96,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="my-appointments.jsp">
+                                <a class="nav-link text-dark" href="${pageContext.request.contextPath}/my-bookings">
                                     <i class="fas fa-list-alt me-1"></i>Lịch hẹn của tôi
                                 </a>
                             </li>
@@ -192,7 +192,7 @@
                         <% if (user != null) { %>
                             <!-- Hiển thị khi ĐÃ đăng nhập -->
                             <% if ("patient".equals(role)) { %>
-                                <a href="booking.jsp" class="btn btn-light btn-lg px-4 py-2">
+                                <a href="${pageContext.request.contextPath}/booking" class="btn btn-light btn-lg px-4 py-2">
                                     <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám
                                 </a>
                                 <a href="patient-dashboard.jsp" class="btn btn-outline-light btn-lg px-4 py-2">
@@ -224,152 +224,376 @@
                         <% } %>
                     </div>
                 </div>
-                <div class="col-lg-6 text-center">
-                    <div class="feature-card bg-white text-dark p-4 mx-auto" style="max-width: 400px;">
-                        <div class="feature-icon">
-                            <% if (user != null) { %>
-                                <% if ("doctor".equals(role)) { %>
-                                    <i class="fas fa-user-md"></i>
-                                <% } else if ("admin".equals(role)) { %>
-                                    <i class="fas fa-cogs"></i>
-                                <% } else { %>
-                                    <i class="fas fa-clock"></i>
-                                <% } %>
-                            <% } else { %>
-                                <i class="fas fa-clock"></i>
-                            <% } %>
-                        </div>
-                        <h4>
-                            <% if (user != null) { %>
-                                <% if ("doctor".equals(role)) { %>
-                                    Quản lý bệnh nhân
-                                <% } else if ("admin".equals(role)) { %>
-                                    Quản trị hệ thống
-                                <% } else { %>
-                                    Lịch khám linh hoạt
-                                <% } %>
-                            <% } else { %>
-                                Lịch khám linh hoạt
-                            <% } %>
-                        </h4>
-                        <p class="text-muted">
-                            <% if (user != null && "doctor".equals(role)) { %>
-                                Quản lý lịch hẹn và hồ sơ bệnh nhân một cách chuyên nghiệp
-                            <% } else if (user != null && "admin".equals(role)) { %>
-                                Quản lý toàn bộ hệ thống phòng khám hiệu quả
-                            <% } else { %>
-                                Đặt lịch khám online 24/7, lựa chọn thời gian phù hợp với bạn
-                            <% } %>
-                        </p>
-                    </div>
-                </div>
+                
+				<div class="col-lg-6 text-center mt-4 mt-lg-0 ">
+				    <div class="card shadow-lg border-0 rounded-4 mx-auto" style="max-width: 400px;">
+				        <div class="card-body p-4">
+				            <!-- Feature Icon -->
+				            <div class="bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" 
+				                 style="width: 100px; height: 100px;">
+				                <% if (user != null) { %>
+				                    <% if ("doctor".equals(role)) { %>
+				                        <i class="fas fa-user-md text-white fs-1"></i>
+				                    <% } else if ("admin".equals(role)) { %>
+				                        <i class="fas fa-cogs text-white fs-1"></i>
+				                    <% } else { %>
+				                        <i class="fas fa-clock text-white fs-1"></i>
+				                    <% } %>
+				                <% } else { %>
+				                    <i class="fas fa-clock text-white fs-1"></i>
+				                <% } %>
+				            </div>
+				            
+				            <!-- Feature Title -->
+				            <h4 class="card-title fw-bold text-primary mb-3">
+				                <% if (user != null) { %>
+				                    <% if ("doctor".equals(role)) { %>
+				                        Quản lý bệnh nhân
+				                    <% } else if ("admin".equals(role)) { %>
+				                        Quản trị hệ thống
+				                    <% } else { %>
+				                        Lịch khám linh hoạt
+				                    <% } %>
+				                <% } else { %>
+				                    Lịch khám linh hoạt
+				                <% } %>
+				            </h4>
+				            
+				            <!-- Feature Description -->
+				            <p class="card-text text-muted">
+				                <% if (user != null && "doctor".equals(role)) { %>
+				                    Quản lý lịch hẹn và hồ sơ bệnh nhân một cách chuyên nghiệp
+				                <% } else if (user != null && "admin".equals(role)) { %>
+				                    Quản lý toàn bộ hệ thống phòng khám hiệu quả
+				                <% } else { %>
+				                    Đặt lịch khám online 24/7, lựa chọn thời gian phù hợp với bạn
+				                <% } %>
+				            </p>
+				        </div>
+				    </div>
+				</div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-number">5000+</div>
-                    <p class="mb-0">Bệnh nhân hài lòng</p>
-                </div>
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-number">50+</div>
-                    <p class="mb-0">Bác sĩ chuyên khoa</p>
-                </div>
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-number">24/7</div>
-                    <p class="mb-0">Hỗ trợ trực tuyến</p>
-                </div>
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-number">15+</div>
-                    <p class="mb-0">Năm kinh nghiệm</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Stats Section - Simple Version -->
+		<section class="stats-section py-5 bg-light">
+		    <div class="container">
+		        <div class="row text-center">
+		            <div class="col-lg-3 col-md-6 mb-4">
+		                <div class="stat-item p-4">
+		                    <div class="stat-number h1 fw-bold text-primary mb-2">5,000+</div>
+		                    <div class="stat-label">
+		                        <i class="fas fa-smile text-success me-2"></i>
+		                        <span class="fs-5 text-dark">Bệnh nhân hài lòng</span>
+		                    </div>
+		                </div>
+		            </div>
+		            
+		            <div class="col-lg-3 col-md-6 mb-4">
+		                <div class="stat-item p-4">
+		                    <div class="stat-number h1 fw-bold text-success mb-2">50+</div>
+		                    <div class="stat-label">
+		                        <i class="fas fa-user-md text-primary me-2"></i>
+		                        <span class="fs-5 text-dark">Bác sĩ chuyên khoa</span>
+		                    </div>
+		                </div>
+		            </div>
+		            
+		            <div class="col-lg-3 col-md-6 mb-4">
+		                <div class="stat-item p-4">
+		                    <div class="stat-number h1 fw-bold text-info mb-2">24/7</div>
+		                    <div class="stat-label">
+		                        <i class="fas fa-headset text-info me-2"></i>
+		                        <span class="fs-5 text-dark">Hỗ trợ trực tuyến</span>
+		                    </div>
+		                </div>
+		            </div>
+		            
+		            <div class="col-lg-3 col-md-6 mb-4">
+		                <div class="stat-item p-4">
+		                    <div class="stat-number h1 fw-bold text-warning mb-2">15+</div>
+		                    <div class="stat-label">
+		                        <i class="fas fa-award text-warning me-2"></i>
+		                        <span class="fs-5 text-dark">Năm kinh nghiệm</span>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</style>
+		
+		<style>
+		.stats-section {
+		    background: #f8f9fa;
+		}
+		
+		.stat-item {
+		    transition: transform 0.3s ease;
+		}
+		
+		.stat-item:hover {
+		    transform: scale(1.05);
+		}
+		
+		.stat-number {
+		    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+		}
+		
+		.stat-label {
+		    font-weight: 500;
+		}
+		</style>
 
     <!-- Services Section -->
-    <section id="services" class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold text-primary">Dịch Vụ Y Tế Chất Lượng</h2>
-                <p class="text-muted">Cung cấp đa dạng các dịch vụ chăm sóc sức khỏe toàn diện</p>
+<section id="services" class="services-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary mb-3">Dịch Vụ Y Tế Chất Lượng</h2>
+            <p class="lead text-muted">Cung cấp đa dạng các dịch vụ chăm sóc sức khỏe toàn diện</p>
+            <div class="title-underline mx-auto"></div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card card h-100 text-center p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4 class="service-title mb-3">Khám Tổng Quát</h4>
+                    <p class="service-description text-muted">Khám sức khỏe định kỳ, tầm soát bệnh và tư vấn sức khỏe toàn diện</p>
+                    <div class="service-overlay">
+                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card card h-100 text-center p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h4 class="service-title mb-3">Chuyên Khoa Tim Mạch</h4>
+                    <p class="service-description text-muted">Chẩn đoán và điều trị các bệnh lý về tim mạch với công nghệ hiện đại</p>
+                    <div class="service-overlay">
+                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card card h-100 text-center p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <h4 class="service-title mb-3">Nhi Khoa</h4>
+                    <p class="service-description text-muted">Chăm sóc sức khỏe trẻ em với đội ngũ bác sĩ chuyên khoa nhi giàu kinh nghiệm</p>
+                    <div class="service-overlay">
+                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card card h-100 text-center p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-tooth"></i>
+                    </div>
+                    <h4 class="service-title mb-3">Nha Khoa</h4>
+                    <p class="service-description text-muted">Dịch vụ nha khoa toàn diện từ cơ bản đến thẩm mỹ với công nghệ tiên tiến</p>
+                    <div class="service-overlay">
+                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card card h-100 text-center p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h4 class="service-title mb-3">Khám Mắt</h4>
+                    <p class="service-description text-muted">Kiểm tra thị lực và điều trị các bệnh lý về mắt với thiết bị hiện đại</p>
+                    <div class="service-overlay">
+                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                    </div>
+                </div>
             </div>
             
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card service-card h-100 text-center p-4">
-                        <div class="service-icon">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <h5>Khám Tổng Quát</h5>
-                        <p class="text-muted">Khám sức khỏe định kỳ, tầm soát bệnh và tư vấn sức khỏe toàn diện</p>
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card card h-100 text-center p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-ambulance"></i>
                     </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card service-card h-100 text-center p-4">
-                        <div class="service-icon">
-                            <i class="fas fa-heartbeat"></i>
-                        </div>
-                        <h5>Chuyên Khoa Tim Mạch</h5>
-                        <p class="text-muted">Chẩn đoán và điều trị các bệnh lý về tim mạch với công nghệ hiện đại</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card service-card h-100 text-center p-4">
-                        <div class="service-icon">
-                            <i class="fas fa-baby"></i>
-                        </div>
-                        <h5>Nhi Khoa</h5>
-                        <p class="text-muted">Chăm sóc sức khỏe trẻ em với đội ngũ bác sĩ chuyên khoa nhi giàu kinh nghiệm</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card service-card h-100 text-center p-4">
-                        <div class="service-icon">
-                            <i class="fas fa-teeth"></i>
-                        </div>
-                        <h5>Nha Khoa</h5>
-                        <p class="text-muted">Dịch vụ nha khoa toàn diện từ cơ bản đến thẩm mỹ</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card service-card h-100 text-center p-4">
-                        <div class="service-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <h5>Khám Mắt</h5>
-                        <p class="text-muted">Kiểm tra thị lực và điều trị các bệnh lý về mắt</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card service-card h-100 text-center p-4">
-                        <div class="service-icon">
-                            <i class="fas fa-ambulance"></i>
-                        </div>
-                        <h5>Cấp Cứu 24/7</h5>
-                        <p class="text-muted">Dịch vụ cấp cứu khẩn cấp, sẵn sàng hỗ trợ mọi lúc</p>
+                    <h4 class="service-title mb-3">Cấp Cứu 24/7</h4>
+                    <p class="service-description text-muted">Dịch vụ cấp cứu khẩn cấp, sẵn sàng hỗ trợ mọi lúc, mọi nơi</p>
+                    <div class="service-overlay">
+                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám ngay
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+.services-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+}
+
+.title-underline {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 2px;
+}
+
+.service-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    overflow: hidden;
+    position: relative;
+    background: white;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.service-card:hover::before {
+    transform: scaleX(1);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 25px rgba(26, 118, 210, 0.3);
+}
+
+.service-icon i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.service-title {
+    color: #2c3e50;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.service-card:hover .service-title {
+    color: var(--primary);
+}
+
+.service-description {
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.service-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(26, 118, 210, 0.9), rgba(52, 168, 83, 0.9));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.4s ease;
+    border-radius: 20px;
+}
+
+.service-card:hover .service-overlay {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .service-card {
+        margin: 0 10px;
+    }
+    
+    .service-icon {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .service-icon i {
+        font-size: 2rem;
+    }
+}
+
+/* Animation for cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.service-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+</style>
 
     <!-- CTA Section -->
-    <section class="py-5 bg-primary text-white">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-3">Sẵn sàng chăm sóc sức khỏe của bạn?</h2>
-            <p class="lead mb-4">Đăng ký ngay để trải nghiệm dịch vụ y tế chất lượng cao</p>
-        </div>
-    </section>
+    <!-- CTA Section - Simple but Beautiful -->
+<!-- CTA Section with Subtle Gradient -->
+	<section class="py-5 text-white" style="background: linear-gradient(135deg, #1a76d2, #1976d2);">
+	    <div class="container text-center">
+	        <h2 class="fw-bold mb-3 display-5">Sẵn sàng chăm sóc sức khỏe của bạn?</h2>
+	        <p class="lead mb-4 fs-5">Đăng ký ngay để trải nghiệm dịch vụ y tế chất lượng cao</p>
+	        <a href="register.jsp" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+	            <i class="fas fa-calendar-plus me-2"></i>Bắt đầu ngay
+	        </a>
+	    </div>
+	</section>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">

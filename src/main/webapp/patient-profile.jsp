@@ -3,7 +3,7 @@
 <%
     Patient patient = (Patient) request.getAttribute("patient");
     if (patient == null) {
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect("login.jsp");
         return;
     }
 %>
@@ -42,7 +42,7 @@
 </head>
 <body>
     <!-- Navigation (sử dụng navigation từ home.jsp) -->
-    <jsp:include page="../includes/header.jsp" />
+    <jsp:include page="/includes/header.jsp" />
     
     <!-- Profile Header -->
     <div class="profile-header">
@@ -153,7 +153,7 @@
 
 
             <!-- Nút submit -->
-            <div class="row">
+            <div class="row mb-5">
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-primary btn-lg px-5">
                         <i class="fas fa-save me-2"></i>Cập nhật hồ sơ
@@ -167,7 +167,7 @@
     </div>
 
     <!-- Footer -->
-    <jsp:include page="../includes/footer.jsp" />
+    <jsp:include page="/includes/footer.jsp" />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -1,0 +1,100 @@
+package com.clinic.model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.clinic.model.bean.Booking;
+import com.clinic.util.DBConnection;
+
+public class BookingDAO {
+	public boolean createBooking(Booking booking) {
+        String sql = "INSERT INTO bookings (patient_id, doctor_id, appointment_date, symptoms, status) VALUES (?, ?, ?, ?, ?)";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, booking.getPatientId());
+            ps.setInt(2, booking.getDoctorId());
+            ps.setTimestamp(3, new Timestamp(booking.getAppointmentDate().getTime()));
+            ps.setString(4, booking.getSymptoms());
+            ps.setString(5, booking.getStatus());
+            
+            return ps.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+	// Lấy danh sách bác sĩ
+    public List<Booking> getAvailableDoctors() {
+        String sql = "SELECT d.doctor_id, u.full_name as doctor_name, d.specialization, u.phone " +
+                    "FROM doctors d " +
+                    "JOIN users u ON d.user_id = u.user_id " +
+                    "WHERE u.role = 'doctor'";
+        
+        List<Booking> doctors = new ArrayList<>();
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Booking doctorInfo = new Booking();
+                doctorInfo.setDoctorId(rs.getInt("doctor_id"));
+                doctorInfo.setDoctorName(rs.getString("doctor_name"));
+                doctorInfo.setSpecialization(rs.getString("specialization"));
+                doctors.add(doctorInfo);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return doctors;
+    }
+ // Lấy danh sách booking theo patient_id
+    public List<Booking> getBookingsByPatientId(int patientId) {
+        String sql = "SELECT b.*, u.full_name as doctor_name, d.specialization " +
+                    "FROM bookings b " +
+                    "JOIN doctors d ON b.doctor_id = d.doctor_id " +
+                    "JOIN users u ON d.user_id = u.user_id " +
+                    "WHERE b.patient_id = ? " +
+                    "ORDER BY b.appointment_date DESC";
+        
+        List<Booking> bookings = new ArrayList<>();
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, patientId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                bookings.add(extractBookingFromResultSet(rs));
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+    private Booking extractBookingFromResultSet(ResultSet rs) throws SQLException {
+        Booking booking = new Booking();
+        booking.setBookingId(rs.getInt("booking_id"));
+        booking.setPatientId(rs.getInt("patient_id"));
+        booking.setDoctorId(rs.getInt("doctor_id"));
+        booking.setAppointmentDate(rs.getTimestamp("appointment_date"));
+        booking.setSymptoms(rs.getString("symptoms"));
+        booking.setStatus(rs.getString("status"));
+        booking.setDoctorName(rs.getString("doctor_name"));
+        booking.setSpecialization(rs.getString("specialization"));
+        booking.setCreatedAt(rs.getTimestamp("created_at"));
+        return booking;
+    }
+}
