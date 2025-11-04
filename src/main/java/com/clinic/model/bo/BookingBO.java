@@ -18,4 +18,11 @@ public class BookingBO {
     public List<Booking> getAvailableDoctors() {
         return bookingDAO.getAvailableDoctors();
     }
+    public List<Booking> getDoctorBookings(int doctorId) {
+        return bookingDAO.getBookingsByDoctorId(doctorId);
+    }
+
+    public boolean updateBookingStatus(int bookingId, String status) {
+        return bookingDAO.updateBookingStatus(bookingId, status);
+    }
 }

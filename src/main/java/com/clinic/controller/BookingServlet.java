@@ -76,6 +76,7 @@ public class BookingServlet extends HttpServlet {
             booking.setDoctorId(doctorId);
             booking.setAppointmentDate(appointmentDate);
             booking.setSymptoms(symptoms);
+            booking.setStatus("Chờ xác nhận");
             
             boolean success = bookingBO.createBooking(booking);
             

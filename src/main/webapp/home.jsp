@@ -199,7 +199,7 @@
                                     <i class="fas fa-tachometer-alt me-2"></i>Quản lý hồ sơ
                                 </a>
                             <% } else if ("doctor".equals(role)) { %>
-                                <a href="doctor-appointments.jsp" class="btn btn-light btn-lg px-4 py-2">
+                                <a href="${pageContext.request.contextPath}/doctor-bookings" class="btn btn-light btn-lg px-4 py-2">
                                     <i class="fas fa-user-md me-2"></i>Xem lịch hẹn
                                 </a>
                                 <a href="doctor-dashboard.jsp" class="btn btn-outline-light btn-lg px-4 py-2">

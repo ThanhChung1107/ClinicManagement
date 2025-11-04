@@ -93,8 +93,57 @@ public class BookingDAO {
         booking.setSymptoms(rs.getString("symptoms"));
         booking.setStatus(rs.getString("status"));
         booking.setDoctorName(rs.getString("doctor_name"));
-        booking.setSpecialization(rs.getString("specialization"));
         booking.setCreatedAt(rs.getTimestamp("created_at"));
         return booking;
+    }
+    
+    //lấy danh sách booking theo bác sĩ
+    public List<Booking> getBookingsByDoctorId(int doctorId){
+    	String sql = """
+    		    SELECT b.*,
+    		           u.full_name AS patient_name,
+    		           du.full_name AS doctor_name
+    		    FROM bookings b
+    		    JOIN patients p ON b.patient_id = p.patient_id
+    		    JOIN users u ON p.user_id = u.user_id
+    		    JOIN doctors d ON b.doctor_id = d.doctor_id
+    		    JOIN users du ON d.user_id = du.user_id
+    		    WHERE b.doctor_id = ?
+    		    ORDER BY b.appointment_date DESC
+    		""";
+    	List<Booking> bookings = new ArrayList<>();
+    	try(Connection conn = DBConnection.getConnection();
+    			PreparedStatement ps = conn.prepareStatement(sql)){
+    		ps.setInt(1, doctorId);
+    		ResultSet rs = ps.executeQuery();
+    		
+    		while (rs.next()) {
+                Booking booking = extractBookingFromResultSet(rs);
+                booking.setPatientName(rs.getString("patient_name"));
+                bookings.add(booking);
+            }
+    	}
+    	catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return bookings;
+    }
+    
+ // Cập nhật trạng thái booking
+    public boolean updateBookingStatus(int bookingId, String status) {
+        String sql = "UPDATE bookings SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE booking_id = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, status);
+            ps.setInt(2, bookingId);
+            
+            return ps.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
