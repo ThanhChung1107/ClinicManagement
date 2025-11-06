@@ -107,7 +107,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="doctor-appointments.jsp">
+                                <a class="nav-link text-dark" href="${pageContext.request.contextPath}/doctor-patients">
                                     <i class="fas fa-user-md me-1"></i>Bệnh nhân của tôi
                                 </a>
                             </li>

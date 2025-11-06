@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.clinic.model.bean.Patient;
 import com.clinic.model.bean.User;
@@ -120,5 +122,131 @@ public class PatientDAO {
         }
         return false;
     }
+    // Lấy tất cả bệnh nhân đã từng đặt lịch với bác sĩ
+    public List<Patient> getPatientsByDoctorId(int doctorId) {
+        String sql = """
+            SELECT DISTINCT p.patient_id, u.full_name, u.email, u.phone, 
+                   u.gender, u.date_of_birth, p.blood_type, p.allergies,
+                   (SELECT COUNT(*) FROM bookings WHERE patient_id = p.patient_id AND doctor_id = ?) as total_visits,
+                   (SELECT MAX(appointment_date) FROM bookings WHERE patient_id = p.patient_id AND doctor_id = ?) as last_visit
+            FROM patients p
+            JOIN users u ON p.user_id = u.user_id
+            JOIN bookings b ON p.patient_id = b.patient_id
+            WHERE b.doctor_id = ?
+            ORDER BY last_visit DESC
+        """;
+        
+        List<Patient> patients = new ArrayList<>();
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, doctorId);
+            ps.setInt(2, doctorId);
+            ps.setInt(3, doctorId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Patient patient = new Patient();
+                patient.setPatientId(rs.getInt("patient_id"));
+                patient.setFullName(rs.getString("full_name"));
+                patient.setEmail(rs.getString("email"));
+                patient.setPhone(rs.getString("phone"));
+                patient.setGender(rs.getString("gender"));
+                patient.setDateOfBirth(rs.getDate("date_of_birth"));
+                patient.setBloodType(rs.getString("blood_type"));
+                patient.setAllergies(rs.getString("allergies"));
+                patient.setTotalVisits(rs.getInt("total_visits"));
+                patient.setLastVisit(rs.getTimestamp("last_visit"));
+                patients.add(patient);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return patients;
+    }
     
+    // Lấy bệnh nhân có lịch hẹn đã xác nhận
+    public List<Patient> getConfirmedPatientsByDoctorId(int doctorId) {
+        String sql = """
+            SELECT DISTINCT p.patient_id, u.full_name, u.email, u.phone, 
+                   u.gender, u.date_of_birth, p.blood_type, p.allergies,
+                   b.booking_id, b.appointment_date, b.symptoms, b.status
+            FROM patients p
+            JOIN users u ON p.user_id = u.user_id
+            JOIN bookings b ON p.patient_id = b.patient_id
+            WHERE b.doctor_id = ? AND b.status = 'Đã xác nhận'
+            ORDER BY b.appointment_date ASC
+        """;
+        
+        List<Patient> patients = new ArrayList<>();
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, doctorId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Patient patient = new Patient();
+                patient.setPatientId(rs.getInt("patient_id"));
+                patient.setFullName(rs.getString("full_name"));
+                patient.setEmail(rs.getString("email"));
+                patient.setPhone(rs.getString("phone"));
+                patient.setGender(rs.getString("gender"));
+                patient.setDateOfBirth(rs.getDate("date_of_birth"));
+                patient.setBloodType(rs.getString("blood_type"));
+                patient.setAllergies(rs.getString("allergies"));
+                patient.setBookingId(rs.getInt("booking_id"));
+                patient.setAppointmentDate(rs.getTimestamp("appointment_date"));
+                patient.setSymptoms(rs.getString("symptoms"));
+                patient.setStatus(rs.getString("status"));
+                patients.add(patient);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return patients;
+    }
+    
+    // Lấy chi tiết bệnh nhân theo patient_id
+    public Patient getPatientById(int patientId) {
+        String sql = """
+            SELECT p.*, u.full_name, u.email, u.phone, u.gender, u.date_of_birth
+            FROM patients p
+            JOIN users u ON p.user_id = u.user_id
+            WHERE p.patient_id = ?
+        """;
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, patientId);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                Patient patient = new Patient();
+                patient.setPatientId(rs.getInt("patient_id"));
+                patient.setUserId(rs.getInt("user_id"));
+                patient.setFullName(rs.getString("full_name"));
+                patient.setEmail(rs.getString("email"));
+                patient.setPhone(rs.getString("phone"));
+                patient.setGender(rs.getString("gender"));
+                patient.setDateOfBirth(rs.getDate("date_of_birth"));
+                patient.setBloodType(rs.getString("blood_type"));
+                patient.setAllergies(rs.getString("allergies"));
+                patient.setMedicalHistory(rs.getString("medical_history"));
+                return patient;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
 }
