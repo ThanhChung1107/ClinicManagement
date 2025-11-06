@@ -1,6 +1,8 @@
 package com.clinic.model.bo;
 
 import java.util.List;
+import java.util.Map;
+
 import com.clinic.model.bean.Booking;
 import com.clinic.model.dao.BookingDAO;
 
@@ -24,5 +26,12 @@ public class BookingBO {
 
     public boolean updateBookingStatus(int bookingId, String status) {
         return bookingDAO.updateBookingStatus(bookingId, status);
+    }
+    public List<Booking> getDoctorBookingsByMonth(int doctorId, int month, int year) {
+        return bookingDAO.getBookingsByDoctorAndMonth(doctorId, month, year);
+    }
+
+    public Map<String, Integer> getBookingCountByDate(int doctorId, int month, int year) {
+        return bookingDAO.countBookingsByDate(doctorId, month, year);
     }
 }

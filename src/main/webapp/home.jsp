@@ -102,7 +102,7 @@
                             </li>
                         <% } else if ("doctor".equals(role)) { %>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="doctor-schedule.jsp">
+                                <a class="nav-link text-dark" href="${pageContext.request.contextPath}/doctor-calendar">
                                     <i class="fas fa-calendar-alt me-1"></i>Lịch làm việc
                                 </a>
                             </li>

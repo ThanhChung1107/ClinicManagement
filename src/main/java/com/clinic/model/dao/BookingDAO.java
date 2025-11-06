@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.clinic.model.bean.Booking;
 import com.clinic.util.DBConnection;
@@ -146,4 +148,81 @@ public class BookingDAO {
         }
         return false;
     }
+ // Thêm method này vào class BookingDAO hiện tại của bạn
+
+ // Lấy danh sách booking theo doctor_id và tháng/năm
+ public List<Booking> getBookingsByDoctorAndMonth(int doctorId, int month, int year) {
+     String sql = """
+         SELECT b.*,
+                u.full_name AS patient_name,
+                u.phone AS patient_phone,
+                du.full_name AS doctor_name,
+                d.specialization
+         FROM bookings b
+         JOIN patients p ON b.patient_id = p.patient_id
+         JOIN users u ON p.user_id = u.user_id
+         JOIN doctors d ON b.doctor_id = d.doctor_id
+         JOIN users du ON d.user_id = du.user_id
+         WHERE b.doctor_id = ?
+         AND MONTH(b.appointment_date) = ?
+         AND YEAR(b.appointment_date) = ?
+         ORDER BY b.appointment_date ASC
+     """;
+     
+     List<Booking> bookings = new ArrayList<>();
+     
+     try (Connection conn = DBConnection.getConnection();
+          PreparedStatement ps = conn.prepareStatement(sql)) {
+         
+         ps.setInt(1, doctorId);
+         ps.setInt(2, month);
+         ps.setInt(3, year);
+         ResultSet rs = ps.executeQuery();
+         
+         while (rs.next()) {
+             Booking booking = extractBookingFromResultSet(rs);
+             booking.setPatientName(rs.getString("patient_name"));
+             bookings.add(booking);
+         }
+         
+     } catch (SQLException e) {
+         e.printStackTrace();
+     }
+     
+     return bookings;
+ }
+
+ // Đếm số lượng booking theo ngày
+ public Map<String, Integer> countBookingsByDate(int doctorId, int month, int year) {
+     String sql = """
+         SELECT DATE(appointment_date) as booking_date, COUNT(*) as count
+         FROM bookings
+         WHERE doctor_id = ?
+         AND MONTH(appointment_date) = ?
+         AND YEAR(appointment_date) = ?
+         GROUP BY DATE(appointment_date)
+     """;
+     
+     Map<String, Integer> countMap = new HashMap<>();
+     
+     try (Connection conn = DBConnection.getConnection();
+          PreparedStatement ps = conn.prepareStatement(sql)) {
+         
+         ps.setInt(1, doctorId);
+         ps.setInt(2, month);
+         ps.setInt(3, year);
+         ResultSet rs = ps.executeQuery();
+         
+         while (rs.next()) {
+             String date = rs.getString("booking_date");
+             int count = rs.getInt("count");
+             countMap.put(date, count);
+         }
+         
+     } catch (SQLException e) {
+         e.printStackTrace();
+     }
+     
+     return countMap;
+ }
 }
