@@ -58,6 +58,164 @@
             padding: 10px 15px;
             margin-right: 15px;
         }
+        
+        .stats-section {
+            background: #f8f9fa;
+        }
+        
+        .stat-item {
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .stat-number {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-label {
+            font-weight: 500;
+        }
+        
+        .services-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+        }
+        
+        .title-underline {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .service-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            position: relative;
+            background: white;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+        }
+        
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(26, 118, 210, 0.3);
+        }
+        
+        .service-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+        
+        .service-title {
+            color: #2c3e50;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+        
+        .service-card:hover .service-title {
+            color: var(--primary);
+        }
+        
+        .service-description {
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+        
+        .service-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(26, 118, 210, 0.9), rgba(52, 168, 83, 0.9));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-radius: 20px;
+        }
+        
+        .service-card:hover .service-overlay {
+            opacity: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .service-card {
+                margin: 0 10px;
+            }
+            
+            .service-icon {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .service-icon i {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Animation for cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .service-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
     </style>
 </head>
 <body>
@@ -91,7 +249,7 @@
                         <!-- Menu dành cho user đã đăng nhập -->
                         <% if ("patient".equals(role)) { %>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="booking.jsp">
+                                <a class="nav-link text-dark" href="${pageContext.request.contextPath}/booking">
                                     <i class="fas fa-calendar-check me-1"></i>Đặt lịch
                                 </a>
                             </li>
@@ -276,74 +434,52 @@
         </div>
     </section>
 
-    <!-- Stats Section - Simple Version -->
-		<section class="stats-section py-5 bg-light">
-		    <div class="container">
-		        <div class="row text-center">
-		            <div class="col-lg-3 col-md-6 mb-4">
-		                <div class="stat-item p-4">
-		                    <div class="stat-number h1 fw-bold text-primary mb-2">5,000+</div>
-		                    <div class="stat-label">
-		                        <i class="fas fa-smile text-success me-2"></i>
-		                        <span class="fs-5 text-dark">Bệnh nhân hài lòng</span>
-		                    </div>
-		                </div>
-		            </div>
-		            
-		            <div class="col-lg-3 col-md-6 mb-4">
-		                <div class="stat-item p-4">
-		                    <div class="stat-number h1 fw-bold text-success mb-2">50+</div>
-		                    <div class="stat-label">
-		                        <i class="fas fa-user-md text-primary me-2"></i>
-		                        <span class="fs-5 text-dark">Bác sĩ chuyên khoa</span>
-		                    </div>
-		                </div>
-		            </div>
-		            
-		            <div class="col-lg-3 col-md-6 mb-4">
-		                <div class="stat-item p-4">
-		                    <div class="stat-number h1 fw-bold text-info mb-2">24/7</div>
-		                    <div class="stat-label">
-		                        <i class="fas fa-headset text-info me-2"></i>
-		                        <span class="fs-5 text-dark">Hỗ trợ trực tuyến</span>
-		                    </div>
-		                </div>
-		            </div>
-		            
-		            <div class="col-lg-3 col-md-6 mb-4">
-		                <div class="stat-item p-4">
-		                    <div class="stat-number h1 fw-bold text-warning mb-2">15+</div>
-		                    <div class="stat-label">
-		                        <i class="fas fa-award text-warning me-2"></i>
-		                        <span class="fs-5 text-dark">Năm kinh nghiệm</span>
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</style>
-		
-		<style>
-		.stats-section {
-		    background: #f8f9fa;
-		}
-		
-		.stat-item {
-		    transition: transform 0.3s ease;
-		}
-		
-		.stat-item:hover {
-		    transform: scale(1.05);
-		}
-		
-		.stat-number {
-		    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-		}
-		
-		.stat-label {
-		    font-weight: 500;
-		}
-		</style>
+    <!-- Stats Section -->
+	<section class="stats-section py-5 bg-light">
+	    <div class="container">
+	        <div class="row text-center">
+	            <div class="col-lg-3 col-md-6 mb-4">
+	                <div class="stat-item p-4">
+	                    <div class="stat-number h1 fw-bold text-primary mb-2">5,000+</div>
+	                    <div class="stat-label">
+	                        <i class="fas fa-smile text-success me-2"></i>
+	                        <span class="fs-5 text-dark">Bệnh nhân hài lòng</span>
+	                    </div>
+	                </div>
+	            </div>
+	            
+	            <div class="col-lg-3 col-md-6 mb-4">
+	                <div class="stat-item p-4">
+	                    <div class="stat-number h1 fw-bold text-success mb-2">50+</div>
+	                    <div class="stat-label">
+	                        <i class="fas fa-user-md text-primary me-2"></i>
+	                        <span class="fs-5 text-dark">Bác sĩ chuyên khoa</span>
+	                    </div>
+	                </div>
+	            </div>
+	            
+	            <div class="col-lg-3 col-md-6 mb-4">
+	                <div class="stat-item p-4">
+	                    <div class="stat-number h1 fw-bold text-info mb-2">24/7</div>
+	                    <div class="stat-label">
+	                        <i class="fas fa-headset text-info me-2"></i>
+	                        <span class="fs-5 text-dark">Hỗ trợ trực tuyến</span>
+	                    </div>
+	                </div>
+	            </div>
+	            
+	            <div class="col-lg-3 col-md-6 mb-4">
+	                <div class="stat-item p-4">
+	                    <div class="stat-number h1 fw-bold text-warning mb-2">15+</div>
+	                    <div class="stat-label">
+	                        <i class="fas fa-award text-warning me-2"></i>
+	                        <span class="fs-5 text-dark">Năm kinh nghiệm</span>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
 
     <!-- Services Section -->
 <section id="services" class="services-section py-5">
@@ -363,7 +499,7 @@
                     <h4 class="service-title mb-3">Khám Tổng Quát</h4>
                     <p class="service-description text-muted">Khám sức khỏe định kỳ, tầm soát bệnh và tư vấn sức khỏe toàn diện</p>
                     <div class="service-overlay">
-                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                        <a href="services.jsp#general-checkup" class="btn btn-outline-light">Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>
@@ -376,7 +512,7 @@
                     <h4 class="service-title mb-3">Chuyên Khoa Tim Mạch</h4>
                     <p class="service-description text-muted">Chẩn đoán và điều trị các bệnh lý về tim mạch với công nghệ hiện đại</p>
                     <div class="service-overlay">
-                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                        <a href="services.jsp#cardiology" class="btn btn-outline-light">Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>
@@ -389,7 +525,7 @@
                     <h4 class="service-title mb-3">Nhi Khoa</h4>
                     <p class="service-description text-muted">Chăm sóc sức khỏe trẻ em với đội ngũ bác sĩ chuyên khoa nhi giàu kinh nghiệm</p>
                     <div class="service-overlay">
-                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                        <a href="services.jsp#pediatrics" class="btn btn-outline-light">Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>
@@ -402,7 +538,7 @@
                     <h4 class="service-title mb-3">Nha Khoa</h4>
                     <p class="service-description text-muted">Dịch vụ nha khoa toàn diện từ cơ bản đến thẩm mỹ với công nghệ tiên tiến</p>
                     <div class="service-overlay">
-                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                        <a href="services.jsp#dentistry" class="btn btn-outline-light">Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>
@@ -415,7 +551,7 @@
                     <h4 class="service-title mb-3">Khám Mắt</h4>
                     <p class="service-description text-muted">Kiểm tra thị lực và điều trị các bệnh lý về mắt với thiết bị hiện đại</p>
                     <div class="service-overlay">
-                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                        <a href="services.jsp#ophthalmology" class="btn btn-outline-light">Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>
@@ -428,175 +564,55 @@
                     <h4 class="service-title mb-3">Cấp Cứu 24/7</h4>
                     <p class="service-description text-muted">Dịch vụ cấp cứu khẩn cấp, sẵn sàng hỗ trợ mọi lúc, mọi nơi</p>
                     <div class="service-overlay">
-                        <a href="#" class="btn btn-outline-light">Tìm hiểu thêm</a>
+                        <a href="services.jsp#emergency" class="btn btn-outline-light">Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-primary btn-lg px-5">
-                <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám ngay
-            </a>
+            <% if (user != null) { %>
+                <a href="booking.jsp" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám ngay
+                </a>
+            <% } else { %>
+                <a href="register.jsp" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám ngay
+                </a>
+            <% } %>
         </div>
     </div>
 </section>
 
-<style>
-.services-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    position: relative;
-}
-
-.title-underline {
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-radius: 2px;
-}
-
-.service-card {
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s ease;
-    overflow: hidden;
-    position: relative;
-    background: white;
-}
-
-.service-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-}
-
-.service-card:hover::before {
-    transform: scaleX(1);
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.service-icon {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.4s ease;
-}
-
-.service-card:hover .service-icon {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 10px 25px rgba(26, 118, 210, 0.3);
-}
-
-.service-icon i {
-    font-size: 2.5rem;
-    color: white;
-}
-
-.service-title {
-    color: #2c3e50;
-    font-weight: 700;
-    transition: color 0.3s ease;
-}
-
-.service-card:hover .service-title {
-    color: var(--primary);
-}
-
-.service-description {
-    line-height: 1.6;
-    margin-bottom: 0;
-}
-
-.service-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(26, 118, 210, 0.9), rgba(52, 168, 83, 0.9));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: all 0.4s ease;
-    border-radius: 20px;
-}
-
-.service-card:hover .service-overlay {
-    opacity: 1;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .service-card {
-        margin: 0 10px;
-    }
-    
-    .service-icon {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .service-icon i {
-        font-size: 2rem;
-    }
-}
-
-/* Animation for cards */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.service-card {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.service-card:nth-child(1) { animation-delay: 0.1s; }
-.service-card:nth-child(2) { animation-delay: 0.2s; }
-.service-card:nth-child(3) { animation-delay: 0.3s; }
-.service-card:nth-child(4) { animation-delay: 0.4s; }
-.service-card:nth-child(5) { animation-delay: 0.5s; }
-.service-card:nth-child(6) { animation-delay: 0.6s; }
-</style>
-
     <!-- CTA Section -->
-    <!-- CTA Section - Simple but Beautiful -->
-<!-- CTA Section with Subtle Gradient -->
 	<section class="py-5 text-white" style="background: linear-gradient(135deg, #1a76d2, #1976d2);">
 	    <div class="container text-center">
 	        <h2 class="fw-bold mb-3 display-5">Sẵn sàng chăm sóc sức khỏe của bạn?</h2>
 	        <p class="lead mb-4 fs-5">Đăng ký ngay để trải nghiệm dịch vụ y tế chất lượng cao</p>
-	        <a href="register.jsp" class="btn btn-light btn-lg px-5 py-3 fw-bold">
-	            <i class="fas fa-calendar-plus me-2"></i>Bắt đầu ngay
-	        </a>
+	        <% if (user != null) { %>
+	            <% if ("patient".equals(role)) { %>
+	                <a href="booking.jsp" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+	                    <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám ngay
+	                </a>
+	            <% } else if ("doctor".equals(role)) { %>
+	                <a href="${pageContext.request.contextPath}/doctor-bookings" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+	                    <i class="fas fa-user-md me-2"></i>Xem lịch hẹn
+	                </a>
+	            <% } else { %>
+	                <a href="admin-dashboard.jsp" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+	                    <i class="fas fa-cogs me-2"></i>Quản lý hệ thống
+	                </a>
+	            <% } %>
+	        <% } else { %>
+	            <a href="register.jsp" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+	                <i class="fas fa-user-plus me-2"></i>Đăng ký ngay
+	            </a>
+	        <% } %>
 	    </div>
 	</section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
+    <footer id="contact" class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-3">
@@ -618,10 +634,10 @@
                 <div class="col-md-4 mb-3">
                     <h5>Kết nối với chúng tôi</h5>
                     <div class="d-flex gap-3">
-                        <a href="#" class="text-white"><i class="fab fa-facebook fa-2x"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-twitter fa-2x"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-instagram fa-2x"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube fa-2x"></i></a>
+                        <a href="https://facebook.com" class="text-white"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="https://twitter.com" class="text-white"><i class="fab fa-twitter fa-2x"></i></a>
+                        <a href="https://instagram.com" class="text-white"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="https://youtube.com" class="text-white"><i class="fab fa-youtube fa-2x"></i></a>
                     </div>
                 </div>
             </div>

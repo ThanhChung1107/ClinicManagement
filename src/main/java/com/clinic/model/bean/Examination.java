@@ -1,6 +1,7 @@
 package com.clinic.model.bean;
 
 import java.util.Date;
+import java.util.List;
 
 public class Examination {
     private int examId;
@@ -17,6 +18,7 @@ public class Examination {
     private Date appointmentDate;
     private String symptoms;
     private String doctorName;
+    private List<Prescription> prescriptions;
     
     // Constructors
     public Examination() {}
@@ -59,4 +61,7 @@ public class Examination {
     
     public String getDoctorName() { return doctorName; }
     public void setDoctorName(String doctorName) { this.doctorName = doctorName; }
+    
+    public List<Prescription> getPrescriptions() { return prescriptions; }
+    public void setPrescriptions(List<Prescription> prescriptions) { this.prescriptions = prescriptions; }
 }

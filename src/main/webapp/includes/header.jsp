@@ -25,7 +25,7 @@
                     <!-- Menu dành cho user đã đăng nhập -->
                     <% if ("patient".equals(headerRole)) { %>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="booking.jsp">
+                            <a class="nav-link text-dark" href="${pageContext.request.contextPath}/booking">
                                 <i class="fas fa-calendar-check me-1"></i>Đặt lịch
                             </a>
                         </li>
