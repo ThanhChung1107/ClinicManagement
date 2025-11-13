@@ -291,27 +291,31 @@
             <div class="col-md-4">
                 <!-- Avatar & Basic Info -->
                 <div class="info-card">
-                    <div class="card-body text-center">
-                        <div class="patient-avatar-large">
-                            <%= patient.getFullName().substring(0, 1).toUpperCase() %>
-                        </div>
-                        <h3 class="mb-1"><%= patient.getFullName() %></h3>
-                        <p class="text-muted mb-3">
-                            <i class="fas fa-venus-mars me-1"></i><%= patient.getGender() %>
-                            <% if (age > 0) { %>
-                                | <%= age %> tuổi
-                            <% } %>
-                        </p>
-                        <div class="d-flex gap-2 justify-content-center">
-                            <span class="badge bg-primary">ID: <%= patient.getPatientId() %></span>
-                            <% if (patient.getBloodType() != null) { %>
-                                <span class="badge bg-danger">
-                                    <i class="fas fa-tint me-1"></i><%= patient.getBloodType() %>
-                                </span>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
+				    <div class="card-body text-center">
+				        <div class="patient-avatar-large">
+				            <%= patient.getFullName().substring(0, 1).toUpperCase() %>
+				        </div>
+				        <h3 class="mb-1"><%= patient.getFullName() %></h3>
+				        <p class="text-muted mb-3">
+				            <i class="fas fa-venus-mars me-1"></i><%= patient.getGender() %>
+				            <% if (age > 0) { %>
+				                | <%= age %> tuổi
+				            <% } %>
+				        </p>
+				        <div class="d-flex gap-2 justify-content-center mb-3">
+				            <span class="badge bg-primary">ID: <%= patient.getPatientId() %></span>
+				            <% if (patient.getBloodType() != null) { %>
+				                <span class="badge bg-danger">
+				                    <i class="fas fa-tint me-1"></i><%= patient.getBloodType() %>
+				                </span>
+				            <% } %>
+				        </div>
+				        <!-- Button chỉnh sửa được đưa vào trong card -->
+				        <button class="btn btn-primary no-print" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+				            <i class="fas fa-edit me-2"></i> Chỉnh sửa thông tin
+				        </button>
+				    </div>
+				</div>
 
                 <!-- Contact Info -->
                 <div class="info-card">
@@ -518,7 +522,82 @@
             </div>
         </div>
     </div>
-
+	<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	
+	            <form action="patient-profile" method="POST">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="editProfileModalLabel">
+	                        <i class="fas fa-edit me-2"></i> Chỉnh sửa hồ sơ
+	                    </h5>
+	                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                </div>
+	
+	                <div class="modal-body">
+	                    <div class="row">
+	                        <div class="col-md-6">
+	                            <h5>Thông tin cá nhân</h5>
+	                            <div class="mb-3">
+	                                <label for="fullName" class="form-label">Họ và tên</label>
+	                                <input type="text" class="form-control" id="fullName" name="full_name" 
+	                                       value="<%= patient.getFullName() %>" required>
+	                            </div>
+	                            <div class="mb-3">
+	                                <label for="phone" class="form-label">Số điện thoại</label>
+	                                <input type="tel" class="form-control" id="phone" name="phone" 
+	                                       value="<%= patient.getPhone() %>" required>
+	                            </div>
+	                            <div class="mb-3">
+	                                <label for="gender" class="form-label">Giới tính</label>
+	                                <select class="form-select" id="gender" name="gender">
+	                                    <option value="Nam" <%= "Nam".equals(patient.getGender()) ? "selected" : "" %>>Nam</option>
+	                                    <option value="Nữ" <%= "Nữ".equals(patient.getGender()) ? "selected" : "" %>>Nữ</option>
+	                                    <option value="Khác" <%= "Khác".equals(patient.getGender()) ? "selected" : "" %>>Khác</option>
+	                                </select>
+	                            </div>
+	                            <div class="mb-3">
+	                                <label for="dob" class="form-label">Ngày sinh</label>
+	                                <% 
+	                                    String dobValue = "";
+	                                    if (patient.getDateOfBirth() != null) {
+	                                        dobValue = new java.text.SimpleDateFormat("yyyy-MM-dd").format(patient.getDateOfBirth());
+	                                    }
+	                                %>
+	                                <input type="date" class="form-control" id="dob" name="date_of_birth" 
+	                                       value="<%= dobValue %>">
+	                            </div>
+	                        </div>
+	
+	                        <div class="col-md-6">
+	                            <h5>Thông tin y tế</h5>
+	                            <div class="mb-3">
+	                                <label for="bloodType" class="form-label">Nhóm máu</label>
+	                                <input type="text" class="form-control" id="bloodType" name="blood_type" 
+	                                       value="<%= patient.getBloodType() != null ? patient.getBloodType() : "" %>">
+	                            </div>
+	                            <div class="mb-3">
+	                                <label for="allergies" class="form-label">Dị ứng</label>
+	                                <textarea class="form-control" id="allergies" name="allergies" rows="3"><%= patient.getAllergies() != null ? patient.getAllergies() : "" %></textarea>
+	                            </div>
+	                            <div class="mb-3">
+	                                <label for="medicalHistory" class="form-label">Tiền sử bệnh</label>
+	                                <textarea class="form-control" id="medicalHistory" name="medical_history" rows="3"><%= patient.getMedicalHistory() != null ? patient.getMedicalHistory() : "" %></textarea>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+	                    <button type="submit" class="btn btn-primary">
+	                        <i class="fas fa-save me-2"></i> Lưu thay đổi
+	                    </button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
     <jsp:include page="includes/footer.jsp" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

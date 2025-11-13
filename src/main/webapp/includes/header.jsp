@@ -30,18 +30,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="my-appointments.jsp">
+                            <a class="nav-link text-dark" href="${pageContext.request.contextPath}/my-bookings">
                                 <i class="fas fa-list-alt me-1"></i>Lịch hẹn của tôi
                             </a>
                         </li>
                     <% } else if ("doctor".equals(headerRole)) { %>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="doctor-schedule.jsp">
+                            <a class="nav-link text-dark" href="${pageContext.request.contextPath}/doctor-calendar">
                                 <i class="fas fa-calendar-alt me-1"></i>Lịch làm việc
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="doctor-appointments.jsp">
+                            <a class="nav-link text-dark" href="${pageContext.request.contextPath}/doctor-patients">
                                 <i class="fas fa-user-md me-1"></i>Bệnh nhân của tôi
                             </a>
                         </li>
@@ -64,9 +64,6 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <% if ("patient".equals(headerRole)) { %>
-                                <li><a class="dropdown-item" href="patient-dashboard.jsp">
-                                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                                </a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/patient-profile">
                                     <i class="fas fa-user-edit me-2"></i>Hồ sơ bệnh nhân
                                 </a></li>
@@ -74,9 +71,6 @@
                                     <i class="fas fa-file-medical me-2"></i>Lịch sử khám bệnh
                                 </a></li>
                             <% } else if ("doctor".equals(headerRole)) { %>
-                                <li><a class="dropdown-item" href="doctor-dashboard.jsp">
-                                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                                </a></li>
                                 <li><a class="dropdown-item" href="doctor-profile.jsp">
                                     <i class="fas fa-user-md me-2"></i>Hồ sơ bác sĩ
                                 </a></li>

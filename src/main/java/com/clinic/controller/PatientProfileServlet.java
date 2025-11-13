@@ -74,23 +74,67 @@ public class PatientProfileServlet extends HttpServlet {
             return;
         }
 
-        // Lấy dữ liệu từ form
-        String bloodType = request.getParameter("blood_type");
-        String allergies = request.getParameter("allergies");
-        String medicalHistory = request.getParameter("medical_history");
+        try {
+            // Lấy thông tin bệnh nhân hiện tại (để có patient_id và user_id)
+            Patient currentPatient = patientBO.getPatientProfile(user.getUserId());
+            if (currentPatient == null) {
+                response.sendRedirect("patient-profile?error=1");
+                return;
+            }
 
-        // Cập nhật thông tin bệnh nhân
-        Patient patient = new Patient();
-        patient.setUserId(user.getUserId());
-        patient.setBloodType(bloodType);
-        patient.setAllergies(allergies);
-        patient.setMedicalHistory(medicalHistory);
+            // Lấy TẤT CẢ dữ liệu từ form
+            String fullName = request.getParameter("full_name");
+            String phone = request.getParameter("phone");
+            String gender = request.getParameter("gender");
+            String dobString = request.getParameter("date_of_birth"); // Định dạng yyyy-MM-dd
+            
+            String bloodType = request.getParameter("blood_type");
+            String allergies = request.getParameter("allergies");
+            String medicalHistory = request.getParameter("medical_history");
 
-        boolean success = patientBO.updatePatientProfile(patient);
+            // Chuyển đổi ngày sinh
+            java.util.Date dateOfBirth = null;
+            if (dobString != null && !dobString.isEmpty()) {
+                try {
+                    // Định dạng input type="date" là yyyy-MM-dd
+                    dateOfBirth = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dobString);
+                } catch (java.text.ParseException e) {
+                    e.printStackTrace(); // Xử lý lỗi nếu ngày không đúng định dạng
+                }
+            }
 
-        if (success) {
-            response.sendRedirect("patient-profile?success=1");
-        } else {
+            // Tạo đối tượng Patient MỚI với đầy đủ thông tin để cập nhật
+            Patient patientToUpdate = new Patient();
+            
+            // ID (Rất quan trọng để biết cập nhật hàng nào)
+            patientToUpdate.setUserId(currentPatient.getUserId());
+            patientToUpdate.setPatientId(currentPatient.getPatientId());
+            
+            // Thông tin từ bảng users
+            patientToUpdate.setFullName(fullName);
+            patientToUpdate.setPhone(phone);
+            patientToUpdate.setGender(gender);
+            patientToUpdate.setDateOfBirth(dateOfBirth);
+            
+            // Thông tin từ bảng patients
+            patientToUpdate.setBloodType(bloodType);
+            patientToUpdate.setAllergies(allergies);
+            patientToUpdate.setMedicalHistory(medicalHistory);
+
+            // Gọi BO để cập nhật
+            boolean success = patientBO.updatePatientProfile(patientToUpdate);
+
+            if (success) {
+                // Cập nhật lại thông tin user trong session nếu tên thay đổi
+                user.setFullname(fullName);
+                session.setAttribute("user", user);
+                
+                response.sendRedirect("patient-profile?success=1");
+            } else {
+                response.sendRedirect("patient-profile?error=1");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect("patient-profile?error=1");
         }
     }

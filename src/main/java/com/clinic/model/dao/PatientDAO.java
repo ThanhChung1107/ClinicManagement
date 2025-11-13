@@ -102,26 +102,6 @@ public class PatientDAO {
         patient.setUpdatedAt(rs.getTimestamp("updated_at"));
         return patient;
     }
-    public boolean updatePatient(Patient patient) {
-        String sql = "UPDATE patients SET blood_type = ?, allergies = ?, medical_history = ?, " +
-                    " updated_at = CURRENT_TIMESTAMP " +
-                    "WHERE user_id = ?";
-        
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
-            ps.setString(1, patient.getBloodType());
-            ps.setString(2, patient.getAllergies());
-            ps.setString(3, patient.getMedicalHistory());
-            ps.setInt(4, patient.getUserId());
-            
-            return ps.executeUpdate() > 0;
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
     // Lấy tất cả bệnh nhân đã từng đặt lịch với bác sĩ
     public List<Patient> getPatientsByDoctorId(int doctorId) {
         String sql = """
@@ -248,5 +228,69 @@ public class PatientDAO {
         }
         
         return null;
+    }
+ // Cập nhật thông tin bệnh nhân
+    public boolean updatePatient(Patient patient) {
+        String sqlUser = """
+            UPDATE users 
+            SET full_name = ?, phone = ?, gender = ?, date_of_birth = ?
+            WHERE user_id = ?
+        """;
+        
+        String sqlPatient = """
+            UPDATE patients 
+            SET blood_type = ?, allergies = ?, medical_history = ?
+            WHERE patient_id = ?
+        """;
+        
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
+            
+            // Update users table
+            try (PreparedStatement ps = conn.prepareStatement(sqlUser)) {
+                ps.setString(1, patient.getFullName());
+                ps.setString(2, patient.getPhone());
+                ps.setString(3, patient.getGender());
+                ps.setDate(4, patient.getDateOfBirth() != null ? 
+                    new java.sql.Date(patient.getDateOfBirth().getTime()) : null);
+                ps.setInt(5, patient.getUserId());
+                ps.executeUpdate();
+            }
+            
+            // Update patients table
+            try (PreparedStatement ps = conn.prepareStatement(sqlPatient)) {
+                ps.setString(1, patient.getBloodType());
+                ps.setString(2, patient.getAllergies());
+                ps.setString(3, patient.getMedicalHistory());
+                ps.setInt(4, patient.getPatientId());
+                ps.executeUpdate();
+            }
+            
+            conn.commit();
+            return true;
+            
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+        return false;
     }
 }
